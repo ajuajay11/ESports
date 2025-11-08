@@ -5,7 +5,7 @@ const app = express();
 const port = 3000;
 const dotenv =require("dotenv");
 dotenv.config();
-const UserData = require('./router')
+const routeData = require('./router')
 
 
 // Middleware to parse JSON bodies
@@ -17,7 +17,7 @@ connectToDatabase();
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
-app.use('/api/user', UserData);
+app.use('/api', routeData);
 
 // Start the server
 app.listen(port, () => {
