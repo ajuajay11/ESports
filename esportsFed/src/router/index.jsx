@@ -1,11 +1,16 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Children, lazy } from "react";
+import ProtectedRoute from "../AuthRedirect";
 
 const LandingLayout = lazy(() => import("../layouts/LandingLayout"));
+const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));
 const Home = lazy(() => import("../pages/Landing"));
 const About = lazy(() => import("../pages/About"));
-const Login = lazy(() => import("../pages/Auth/Login"));
-const Register = lazy(() => import("../pages/Auth/Register"));
+const Login = lazy(() => import("../pages/auth/Login"));
+const Register = lazy(() => import("../pages/auth/Register"));
+const MainProfile = lazy(() => import("../pages/profile/index"));
+const Matches = lazy(() => import("../pages/profile/Matches"));
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,11 +26,25 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (<ProtectedRoute><Login /></ProtectedRoute>),
       },
         {
         path: "/register",
-        element: <Register />,
+        element: (<ProtectedRoute><Register /></ProtectedRoute>),
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "",
+        element: <MainProfile />,
+      },
+      {
+        path: "matches",
+        element: <Matches />,
       },
     ],
   },

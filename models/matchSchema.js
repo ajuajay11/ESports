@@ -8,12 +8,11 @@ const participantSchema = new mongoose.Schema({
 });
 
 const matchSchema = new mongoose.Schema({
-  matchId: { type: String, required: true, unique: true },  // room ID
-  password: { type: String, required: true },               // room password
+  matchId: { type: String, required: true, unique: true, index: true }, // fast lookup
+  password: { type: String, required: true },
+  participants: [participantSchema],
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true } // optional but good
+}); 
 
-  participants: [participantSchema] // users who joined
-});
- 
 const Match = mongoose.model("Match", matchSchema);
-
 module.exports = Match;

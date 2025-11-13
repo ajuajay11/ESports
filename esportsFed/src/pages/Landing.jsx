@@ -1,28 +1,39 @@
-import { useDispatch, useSelector } from "react-redux";
-// dispatch to add data, seelctor to get data
-import { useEffect  } from "react";
-import { setUser } from "../store/authSlice";
+import { useState } from "react";
+import Button from "../components/buttons";
+import CreateMatchModal from "../components/match/CreateMatchModal";
+import JoinMatchModal from "../components/match/JoinMatchModal";
 
 export default function Home() {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-   useEffect(() => {
-    const fetchUser =async ()=>{
-        try {
-            const res = await fetch('https://dummyjson.com/users');
-            const data = await res.json();                   
-            console.log(data.users)
-            dispatch(setUser(data.users[0]));    
-        } catch (error) {
-        console.log(error)    
-        }
-    }
-    fetchUser();
-  }, [])
-  
+  const [openCreate, setOpenCreate] = useState(false);
+  const [openJoin, setOpenJoin] = useState(false);
+
   return (
     <>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      <section style={{ minHeight: "100vh" }}>
+        <div className="flex items-center h-full gap-10">
+          {/* CREATE MATCH BUTTON */}
+          <button
+            onClick={() => setOpenCreate(true)}
+            className="px-5 w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-md"
+          >
+            openCreate
+          </button>
+
+          {/* JOIN MATCH BUTTON */}
+          <button
+            onClick={() => setOpenJoin(true)}
+            className="px-5 w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-md"
+          >
+            openJoin
+          </button>
+        </div>
+      </section>
+
+      {/* CREATE MATCH MODAL */}
+      {openCreate && <CreateMatchModal close={() => setOpenCreate(false)} />}
+
+      {/* JOIN MATCH MODAL */}
+      {openJoin && <JoinMatchModal close={() => setOpenJoin(false)} />}
     </>
   );
 }

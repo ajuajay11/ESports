@@ -8,33 +8,23 @@ const dotenv = require("dotenv");
 dotenv.config();
 const routeData = require("./router");
 const server = http.createServer(app);
-
+ 
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 connectToDatabase();
-
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: "*", 
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("A user connected");
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-
-  socket.on("chat message", (msg) => {
-    console.log("message: " + msg);
-    io.emit("chat message", msg);
-  });
-});
-
+// 👉 Load your socket handlers here
+require("./socket")(io);
+ 
 // Sample route
 app.get("/", (req, res) => {
   res.send("Hello World!");

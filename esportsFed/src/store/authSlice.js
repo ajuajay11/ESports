@@ -3,12 +3,16 @@ import {createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
     name:"auth",
     initialState:{
-        user:[]
+        user:[],
+        isAuthenticated:false
     },
     reducers:{
         //  in  reducer her eis the mutation is happening 
         setUser:(state, action)=>{
             state.user = action.payload;
+        },
+        setAuth:(state, action)=>{
+            state.isAuthenticated = action.payload;
         },
         logout:(state)=>{
             state.user = []
@@ -16,5 +20,6 @@ const authSlice = createSlice({
     }
 })
 export const { setUser } = authSlice.actions;  // ✅ named export
+export const { setAuth } = authSlice.actions;  // ✅ named export
 export default authSlice.reducer;  
  
