@@ -9,7 +9,8 @@ const About = lazy(() => import("../pages/About"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 const MainProfile = lazy(() => import("../pages/profile/index"));
-const Matches = lazy(() => import("../pages/profile/Matches"));
+const Matches = lazy(() => import("../pages/match/RoomMatch"));
+const RoomMatch = lazy(() => import("../pages/profile/Matches"));
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
         path: "/register",
         element: (<ProtectedRoute><Register /></ProtectedRoute>),
       },
+      {
+        path: "/room/:matchId",
+        element: ( <Matches /> ),
+      },
     ],
   },
   {
@@ -44,7 +49,7 @@ const router = createBrowserRouter([
       },
       {
         path: "matches",
-        element: <Matches />,
+        element: <RoomMatch />,
       },
     ],
   },

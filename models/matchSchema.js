@@ -11,7 +11,8 @@ const matchSchema = new mongoose.Schema({
   matchId: { type: String, required: true, unique: true, index: true }, // fast lookup
   password: { type: String, required: true },
   participants: [participantSchema],
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true } // optional but good
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
+  
 }); 
 
 const Match = mongoose.model("Match", matchSchema);

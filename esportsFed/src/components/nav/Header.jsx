@@ -21,16 +21,17 @@ export default function Header() {
             </span>
           </a>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
-            {user.isAuth ? (
-              <Link to="/login">
-                <Button text="login" />
-              </Link>
-            ) : (
-              <div className="text-white flex items-center gap-3">
-                <div>{user.user.user.username}</div>
-                 <img className="h-8" alt="Flowbite Logo" src="https://flowbite.com/docs/images/logo.svg"/> 
-              </div>
-            )}
+            {!user.isAuthenticated ? (
+  <Link to="/login">
+    <Button text="Login" />
+  </Link>
+) : (
+  <Link to="/dashboard" className="text-white flex items-center gap-3">
+    <div>{user?.user?.username}</div>
+    <img className="h-8" src="https://flowbite.com/docs/images/logo.svg" />
+  </Link>
+)}
+
           </div>
         </div>
       </nav>

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 function CreateMatchModal({ close }) {
   const token = useSelector((state) => state.auth.user.token);
-  console.log(token);
-
+ 
   const [match, setMatch] = useState({
     matchId: "",
     password: "",
@@ -14,10 +14,13 @@ function CreateMatchModal({ close }) {
     try {
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       const res = await axios.post(
-        "http://localhost:3000/api/match/create-match",
+        "http://localhost:3000/api/match/create-match/",
         match
       );
       console.log(res);
+      if(res.status === 201 || res.status === "201"){
+         <Navigate to={`/room/${res?.data?.match?._id}`}/>;
+      }
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);

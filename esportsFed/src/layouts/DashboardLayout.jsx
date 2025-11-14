@@ -6,17 +6,18 @@ export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.auth.user.user.username);
 
-  const nav = [
-    { name: "Dashboard", to: "/dashboard" },
-    { name: "Matches", to: "/dashboard/matches" },
-    { name: "Create Match", to: "/match/create" },
-    { name: "Profile", to: "/profile" },
-  ];
-
-  const linkClass = ({ isActive }) =>
-    `block px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-      isActive ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-gray-100"
-    }`;
+const nav = [
+  { name: "Dashboard", to: "/dashboard" },
+  { name: "Matches", to: "/dashboard/matches?role=all" },
+  { name: "Create Match", to: "/dashboard/create" },
+  { name: "Profile", to: "/dashboard/profile" },
+];
+ const linkClass = ({ isActive }) =>
+  `block px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+    isActive  
+      ? "bg-blue-100 text-blue-700"
+      : "text-gray-700 hover:bg-gray-100"
+  }`;
 
   return (
     <div className="min-h-screen flex bg-gray-50">

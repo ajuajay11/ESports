@@ -41,11 +41,11 @@ router.post("/create-match", verifyToken,verifySubscribed, async (req, res) => {
     res.status(500).json({ message: "Server error creating match" });
   }
 });
-router.get("/matches/:role", verifyToken, async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   try {
-    const { role } = req.params;
-    const userId = req.user._id.toString();
-
+    const {role } = req.query
+    const userId = req.user._id;
+ 
     // Return matches created by the authenticated user (admin)
     if (role === "admin") {
       const matches = await Match.find({ createdBy: userId }).select("-password").sort({ _id: -1 });
@@ -54,7 +54,7 @@ router.get("/matches/:role", verifyToken, async (req, res) => {
 
     // Return matches where the authenticated user is a participant
     if (role === "participant" || role === "player" || role === "user") {
-      const matches = await Match.find({ "participants.userId": userId }).select("-password");
+      const matches = await Match.find({ "participants.userId": userId }).select("-password username");
       return res.status(200).json({ matches });
     }
 
@@ -70,7 +70,29 @@ router.get("/matches/:role", verifyToken, async (req, res) => {
     res.status(500).json({ message: "Server error creating match" });
   }
 });
+router.get("/participants", verifyToken, async (req, res) => {
+  try {
+    const { matchId } = req.query;
 
+    if (!matchId) {
+      return res.status(400).json({ message: "matchId is required" });
+    }
+
+    const match = await Match.findOne({ matchId });
+
+    if (!match) {
+      return res.status(404).json({ message: "Match not found" });
+    }
+
+    return res.status(200).json({
+      participants: match.participants
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error fetching participants" });
+  }
+});
 
 router.post("/join-match", verifyToken, async (req, res) => {
   try {

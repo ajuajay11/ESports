@@ -1,25 +1,28 @@
-import {createSlice } from "@reduxjs/toolkit";
-// slice is a part of store
+import { createSlice } from "@reduxjs/toolkit";
+
 const authSlice = createSlice({
-    name:"auth",
-    initialState:{
-        user:[],
-        isAuthenticated:false
+  name: "auth",
+  initialState: {
+    user: null,
+    isAuthenticated: false,
+  },
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
-    reducers:{
-        //  in  reducer her eis the mutation is happening 
-        setUser:(state, action)=>{
-            state.user = action.payload;
-        },
-        setAuth:(state, action)=>{
-            state.isAuthenticated = action.payload;
-        },
-        logout:(state)=>{
-            state.user = []
-        }
-    }
-})
-export const { setUser } = authSlice.actions;  // ✅ named export
-export const { setAuth } = authSlice.actions;  // ✅ named export
-export default authSlice.reducer;  
- 
+    setAuth: (state, action) => {
+      state.isAuthenticated = action.payload;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+
+      // clear localStorage
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    },
+  },
+});
+
+export const { setUser, setAuth, logout } = authSlice.actions;
+export default authSlice.reducer;

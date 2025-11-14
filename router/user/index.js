@@ -61,11 +61,11 @@ router.post("/register", async (req, res) => {
     const { firstname, lastname, age, phone, username, email, password } = req.body;
 
     // 1️⃣ Check if email is verified
-    // const isEmailVerified = await Otp.findOne({ email });
+    const isEmailVerified = await Otp.findOne({ email });
 
-    // if (!isEmailVerified) {
-    //   return res.status(401).json({ message: `${email} is not verified` });
-    // }
+    if (!isEmailVerified) {
+      return res.status(401).json({ message: `${email} is not verified` });
+    }
 
     // 2️⃣ Check for missing fields
     const requiredFields = { firstname, lastname, age, phone, email, password };
@@ -105,7 +105,7 @@ router.post("/register", async (req, res) => {
       phone,
       username: finalUsername,
       email,
-      password, // ⚠️ Hash password before saving
+      password, 
     });
 
     await user.save();
@@ -149,6 +149,11 @@ router.post("/login", async (req, res) => {
         _id: user._id,
         email: user.email,
         username: user.username,
+        firstname:user.firstname,
+        lastname:user.lastname,
+        wallet:user.wallet,
+        isSubscribed:user.isSubscribed,
+        age:user.age
       },
     });
     res.status(200).json({ message: "User login successfully" });
